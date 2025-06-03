@@ -80,7 +80,12 @@
 )
 
 
-#let description = invoice_tx.txn.description
+#let description = if static_data.invoice.specification_override.len() < 1 {
+  invoice_tx.txn.description
+} else {
+  static_data.invoice.specification_override
+}
+
 #let amount_str = invoice_tx.postings.find(item => item.account == static_data.invoice.account_name_for_amount).amount
 #let amount = float(amount_str)
 
