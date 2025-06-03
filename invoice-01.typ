@@ -30,19 +30,19 @@
 )
 
 #set page(
-  margin: (bottom: 6cm),
+  margin: (bottom: 8cm),
   footer: block(
     width: 100%,
     grid(
-      columns: (1fr, 1fr, 1fr), // Four equal-width columns
+      columns: (1fr, 1fr), // Four equal-width columns
       gutter: 0.5em,
       rect(width: 100%, fill: aqua)[#static_data.sender.company_name \
         #static_data.sender.personal_name \
-        #static_data.sender.address],
-
-      rect(width: 100%, fill: lime)[#link("mailto:" + static_data.sender.email)[#static_data.sender.email] \
+        #static_data.sender.address \
+        #link("mailto:" + static_data.sender.email)[#static_data.sender.email] \
         #static_data.sender.phone) \
-        #link(static_data.sender.web)],
+        #link(static_data.sender.web)
+      ],
 
       rect(width: 100%, fill: yellow)[
         #static_data.bank.reg_nr \
@@ -51,7 +51,7 @@
         #static_data.bank.iban \
         #static_data.bank.bic \
         #static_data.bank.comment
-        ]
+      ]
     ),
   ),
 )
@@ -101,6 +101,3 @@
   )
 ]
 
-
-
-// #invoice_tx.displayTime \
