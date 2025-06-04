@@ -1,27 +1,26 @@
 # PTA Typst Invoice
 
-WIP invoice for use with PTA software like [Tackler](https://tackler.fi/).
+**WIP** invoice for use with PTA software like [Tackler](https://tackler.fi/).\
+The address placement *hopefully* fits a C5 envelope with an h2 "window".
 
 ## PTA
-Read more about [PTA - Plain Text Accounting](https://plaintextaccounting.org/).
-Hopefully in the future this invoice will work with all PTA software that exports json. 
+Read more about [PTA - Plain Text Accounting](https://plaintextaccounting.org/). It should be possible to support all pta software that exports to json.
 
-## JSON
-Generate json with something like:\
-`tackler --config journal/conf/tackler.toml  --output.dir .     --output.prefix report`
-
-## PDF
-Create pdf with:\
-`typst compile invoice-01.typ`
-
-## Details
-The invoice reads from .toml and .json files.
+## Data
+The invoice reads from .toml and .json files:
 - clients.toml
 - static_data.toml
 - a json file containing the transaction data, the file name is specified in static_data.toml
 
-## Preview
+### JSON
+Generate the json with something like:\
+`tackler --config journal/conf/tackler.toml  --output.dir . --output.prefix report`
 
+### PDF
+Create pdf with:\
+`typst compile invoice-01.typ`
+
+### Preview
 ![](thumbnail.png)
 
 
