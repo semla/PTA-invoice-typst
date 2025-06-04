@@ -30,21 +30,28 @@
 )
 
 #set page(
+      
   margin: (bottom: 8cm),
-  footer: block(
+
+  footer: 
+line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
     width: 100%,
     grid(
-      columns: (1fr, 1fr), // Four equal-width columns
+      columns: (1fr, 1fr, 1.6fr), // Four equal-width columns
       gutter: 0.5em,
-      rect(width: 100%, fill: aqua)[#static_data.sender.company_name \
+      rect(fill: luma(245), inset: (x:5mm,y:3mm))[
+        #static_data.sender.company_name \
         #static_data.sender.personal_name \
-        #static_data.sender.address \
+        #static_data.sender.address 
+      ],
+
+      rect(fill: luma(245),inset: (x:5mm,y:3mm))[
         #link("mailto:" + static_data.sender.email)[#static_data.sender.email] \
-        #static_data.sender.phone) \
+        #static_data.sender.phone \
         #link(static_data.sender.web)
       ],
 
-      rect(width: 100%, fill: yellow)[
+       rect(fill: luma(245),inset: (x:5mm,y:3mm))[
         #static_data.bank.reg_nr \
         #static_data.bank.vat_nr \
         #static_data.bank.bank_account \
