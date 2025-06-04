@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "items": [
+      {
+        "TimeZoneInfo": {
+          "zoneId": "UTC"
+        }
+      }
+    ]
+  },
+  "title": "Register Report",
+  "transactions": [
+    {
+      "displayTime": "2024-02-29",
+      "txn": {
+        "timestamp": "2024-02-29T00:00:00+00:00[UTC]",
+        "description": "Invoice 89, Creating Typst template for PTA"
+      },
+      "postings": [
+        {
+          "account": "assets:receivable",
+          "amount": "63.00",
+          "runningTotal": "63.00"
+        },
+        {
+          "account": "revenue",
+          "amount": "-63.00",
+          "runningTotal": "-63.00"
+        }
+      ]
+    },
+    {
+      "displayTime": "2024-06-20",
+      "txn": {
+        "timestamp": "2024-06-20T00:00:00+00:00[UTC]",
+        "description": "Sweet'n Sour Candies"
+      },
+      "postings": [
+        {
+          "account": "assets:cash",
+          "amount": "-2.50",
+          "runningTotal": "-2.50"
+        },
+        {
+          "account": "expenses:sweets:candy",
+          "amount": "2.50",
+          "runningTotal": "2.50"
+        }
+      ]
+    },
+    {
+      "displayTime": "2024-06-20",
+      "txn": {
+        "timestamp": "2024-06-20T00:00:00+00:00[UTC]",
+        "description": "Sweet'n Sour Candies"
+      },
+      "postings": [
+        {
+          "account": "assets:cash",
+          "amount": "-2.50",
+          "runningTotal": "-5.00"
+        },
+        {
+          "account": "expenses:sweets:candy",
+          "amount": "2.50",
+          "runningTotal": "5.00"
+        }
+      ]
+    },
+    {
+      "displayTime": "2024-12-21",
+      "txn": {
+        "timestamp": "2024-12-21T00:00:00+00:00[UTC]",
+        "description": "Strawberry ice cream"
+      },
+      "postings": [
+        {
+          "account": "assets:cash",
+          "amount": "-3.00",
+          "runningTotal": "-8.00"
+        },
+        {
+          "account": "expenses:sweets:ice·cream",
+          "amount": "3.00",
+          "runningTotal": "3.00"
+        }
+      ]
+    },
+    {
+      "displayTime": "2025-01-02",
+      "txn": {
+        "timestamp": "2025-01-02T00:00:00+00:00[UTC]",
+        "description": ""
+      },
+      "postings": [
+        {
+          "account": "liabilities:visa:4012_8888_8888_1881",
+          "amount": "-3800.00",
+          "runningTotal": "-3800.00",
+          "commodity": "CAD"
+        },
+        {
+          "account": "assets:coins",
+          "amount": "1.00",
+          "runningTotal": "1.00",
+          "commodity": "gml"
+        }
+      ]
+    }
+  ]
+}
