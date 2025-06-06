@@ -30,9 +30,7 @@
 )
 
 #set page(
-      
   margin: (bottom: 8cm),
-
   footer: 
 line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
     width: 100%,
@@ -52,13 +50,10 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
       ],
 
        rect(fill: luma(245),inset: (x:5mm,y:3mm))[
-        #static_data.bank.reg_nr \
-        #static_data.bank.vat_nr \
-        #static_data.bank.bank_account \
-        #static_data.bank.iban \
-        #static_data.bank.bic \
-        #static_data.bank.comment
-      ]
+        #for (key, value) in static_data.bank {
+          key +": "+ value +"\n"
+        }
+       ]
     ),
   ),
 )

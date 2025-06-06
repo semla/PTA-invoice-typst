@@ -12,12 +12,12 @@ email="jd@example.com"
 web="https://example.com"
 
 [bank]
-bank_account="Bankaccount: 5555-5555"
-reg_nr="Reg nr: 555555-5555"
-vat_nr="Vat nr: 555555-5555"
-iban="IBAN: FI55 5555 5555 5555 5555 5555"
-bic="Bic: SWEDSESS"
-comment="Approved for F-tax"
+"Bank account"="5555-5555"
+"Reg nr"="555555-5555"
+"Vat nr"="555555-5555"
+IBAN="FI55 5555 5555 5555 5555 5555"
+Bic="SWEDSESS"
+Comment="Approved for F-tax"
 
 [invoice]
 logo_path = "dummy-logo.png"

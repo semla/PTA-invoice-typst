@@ -21,8 +21,13 @@ Create pdf with:\
 `typst compile invoice-01.typ`
 
 ### Preview
+
+---
+
 ![](thumbnail.png)
 
+---
 
 ## Disclaimer
-The invoice may not fullfill legal requirements for your country.
+The invoice may not fullfill legal requirements for your country.\
+It is also a work in progress.
