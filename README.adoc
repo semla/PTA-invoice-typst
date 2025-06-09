@@ -1,10 +1,10 @@
 # PTA Typst Invoice
 
-**WIP** invoice for use with PTA software like [Tackler](https://tackler.fi/).\
+**WIP** invoice for use with PTA software like  https://tackler.fi/[Tackler]. \
 The address placement *hopefully* fits a C5 envelope with an h2 "window".
 
 ## PTA
-Read more about [PTA - Plain Text Accounting](https://plaintextaccounting.org/). It should be possible to support all pta software that exports to json.
+Read more about https://plaintextaccounting.org/[PTA - Plain Text Accounting]. It should be possible to support all pta software that exports to json.
 
 ## Data
 The invoice reads from .toml and .json files:
@@ -24,8 +24,7 @@ Create pdf with:\
 
 ---
 
-![](thumbnail.png)
-
+image::./thumbnail.png[resume, frame="all"]
 ---
 
 ## Disclaimer
