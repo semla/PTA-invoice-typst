@@ -2,17 +2,19 @@
 
 #let static_data = toml("static_data.toml")
 #let client_data = toml("clients.toml")
-#let tx_data = json(static_data.invoice.data_dir + static_data.invoice.data_file)
+#let data_from_pta_export = json(static_data.invoice.data_dir + "/" + static_data.invoice.data_file)
 
 #let invoice_tx = "Not found or array empty"
-#if "transactions" in tx_data and type(tx_data.transactions) == array and tx_data.transactions.len() > 0 {
-  invoice_tx = tx_data
+#if "transactions" in data_from_pta_export and type(data_from_pta_export.transactions) == array and data_from_pta_export.transactions.len() > 0 {
+  invoice_tx = data_from_pta_export
     .transactions
-    .filter(item => item.txn.description.contains(static_data.invoice.filter_for_register_report))
+    //.filter(item => item.txn.description.contains(static_data.invoice.filter_for_register_report))
     .last()
 }
 
 #let invoice_date_str = datetime.today().display()
+
+
 #if static_data.invoice.invoice_date.len() > 1 {
   invoice_date_str = static_data.invoice.invoice_date
 }
@@ -81,14 +83,8 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
     #client.address],
 )
 
-
-#let description = if static_data.invoice.specification_override.len() < 1 {
-  invoice_tx.txn.description
-} else {
-  static_data.invoice.specification_override
-}
-
-#let amount_str = invoice_tx.postings.find(item => item.account == static_data.invoice.account_name_for_amount).amount
+// #let amount_str = invoice_tx.postings.find(item => item.account == static_data.invoice.account_name_for_amount).runningTotal
+#let amount_str = invoice_tx.postings.at(0).runningTotal
 #let amount = float(amount_str)
 
 #let vat = 0
@@ -104,7 +100,7 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
   #table(
     columns: 4,
     [*Specification*], [*Amount*], [*Vat*], [*Total*],
-    [#description], [#calc.abs(amount)], [#vat], [#calc.abs(total)],
+    [#invoice_tx.txn.description], [#calc.abs(amount)], [#vat], [#calc.abs(total)],
   )
 ]
 
