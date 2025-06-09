@@ -51,7 +51,7 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
 
        rect(fill: luma(245),inset: (x:5mm,y:3mm))[
         #for (key, value) in static_data.bank {
-          key +": "+ value +"\n"
+          strong(key) +": "+ value +"\n"
         }
        ]
     ),
