@@ -20,11 +20,12 @@ Bic="SWEDSESS"
 Comment="Approved for F-tax"
 
 [invoice]
+data_dir=""
+data_file="report.reg.json"
 logo_path = "dummy-logo.png"
 invoice_date = "2025-06-01"
 invoice_number = "321"
 filter_for_register_report = "Invoice"
 account_name_for_amount = "revenue"
 account_name_for_vat = "liabilities:vat:sales"
-txn_file="report.reg.json"
 specification_override = ""

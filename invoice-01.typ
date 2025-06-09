@@ -2,7 +2,7 @@
 
 #let static_data = toml("static_data.toml")
 #let client_data = toml("clients.toml")
-#let tx_data = json(static_data.invoice.txn_file)
+#let tx_data = json(static_data.invoice.data_dir + static_data.invoice.data_file)
 
 #let invoice_tx = "Not found or array empty"
 #if "transactions" in tx_data and type(tx_data.transactions) == array and tx_data.transactions.len() > 0 {
