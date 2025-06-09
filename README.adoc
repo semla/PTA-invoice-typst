@@ -1,6 +1,6 @@
 # PTA Typst Invoice
 
-**WIP** invoice for use with PTA software like  https://tackler.fi/[Tackler]. \
+**WIP** invoice for use with PTA software like  https://tackler.fi/[Tackler]. +
 The address placement *hopefully* fits a C5 envelope with an h2 "window".
 
 ## PTA
@@ -13,11 +13,11 @@ The invoice reads from .toml and .json files:
 - a json file containing the transaction data, the file name is specified in static_data.toml
 
 ### JSON
-Generate the json with something like:\
+Generate the json with something like: +
 `tackler --config journal/conf/tackler.toml  --output.dir . --output.prefix report`
 
 ### PDF
-Create pdf with:\
+Create pdf with: +
 `typst compile invoice-01.typ`
 
 ### Preview
@@ -28,5 +28,5 @@ image::./thumbnail.png[resume, frame="all"]
 ---
 
 ## Disclaimer
-The invoice may not fullfill legal requirements for your country.\
+The invoice may not fullfill legal requirements for your country. +
 It is also a work in progress.
