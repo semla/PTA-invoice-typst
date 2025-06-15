@@ -10,7 +10,7 @@ Read more about https://plaintextaccounting.org/[PTA - Plain Text Accounting]. I
 The invoice reads from .toml and .json files:
 - clients.toml
 - static_data.toml
-- a json file containing the transaction data, the file name is specified in static_data.toml
+- 2 json files containing the balance and register, the path and file names and are specified in static_data.toml
 
 ### JSON
 Generate the json with something like: +
