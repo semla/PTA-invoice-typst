@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "items": [
+      {
+        "TxnSetChecksum": {
+          "size": 2,
+          "hash": {
+            "algorithm": "SHA-256",
+            "value": "5dd268e6d597746b80f1002782eb68bf783705304816b6056606a9d335d184f2"
+          }
+        }
+      },
+      {
+        "TxnFilterDescription": {
+          "txnFilterDef": {
+            "txnFilter": {
+              "TxnFilterAND": {
+                "txnFilters": [
+                  {
+                    "TxnFilterTxnTSBegin": {
+                      "begin": "2025-01-01T00:00:00Z"
+                    }
+                  },
+                  {
+                    "TxnFilterTxnTSEnd": {
+                      "end": "2025-02-01T00:00:00Z"
+                    }
+                  },
+                  {
+                    "TxnFilterPostingAmountGreater": {
+                      "regex": "Billing:Initech:.*",
+                      "amount": 0
+                    }
+                  },
+                  {
+                    "TxnFilterPostingAmountLess": {
+                      "regex": "Client:Initech:.*",
+                      "amount": 0
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "AccountSelectorChecksum": {
+          "hash": {
+            "algorithm": "SHA-256",
+            "value": "7e7dd8ef1e4292416ffe27d9c42cf3c6f218cfe63cc12d1ec3546ca838d1cfda"
+          },
+          "selectors": [
+            "Billing:.*"
+          ]
+        }
+      },
+      {
+        "TimeZoneInfo": {
+          "zoneId": "UTC"
+        }
+      }
+    ]
+  },
+  "title": "Register Report",
+  "transactions": [
+    {
+      "displayTime": "2025-01-03",
+      "txn": {
+        "timestamp": "2025-01-03T00:00:00+00:00[UTC]",
+        "description": "Initial project meeting",
+        "uuid": "5f6673c2-205f-4897-a219-89f5287db017"
+      },
+      "postings": [
+        {
+          "account": "Billing:Initech:T-M:Material",
+          "amount": "200.00",
+          "runningTotal": "200.00",
+          "commodity": "€"
+        }
+      ]
+    },
+    {
+      "displayTime": "2025-01-03",
+      "txn": {
+        "timestamp": "2025-01-03T00:00:00+00:00[UTC]",
+        "description": "Initial project meeting",
+        "uuid": "a2d75bba-07cf-46c3-b90d-08a7c2b33688"
+      },
+      "postings": [
+        {
+          "account": "Billing:Initech:T-M:Time",
+          "amount": "840.00",
+          "runningTotal": "840.00",
+          "commodity": "€"
+        }
+      ]
+    }
+  ]
+}

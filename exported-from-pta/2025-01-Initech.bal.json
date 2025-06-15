@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "items": [
+      {
+        "TxnSetChecksum": {
+          "size": 2,
+          "hash": {
+            "algorithm": "SHA-256",
+            "value": "5dd268e6d597746b80f1002782eb68bf783705304816b6056606a9d335d184f2"
+          }
+        }
+      },
+      {
+        "TxnFilterDescription": {
+          "txnFilterDef": {
+            "txnFilter": {
+              "TxnFilterAND": {
+                "txnFilters": [
+                  {
+                    "TxnFilterTxnTSBegin": {
+                      "begin": "2025-01-01T00:00:00Z"
+                    }
+                  },
+                  {
+                    "TxnFilterTxnTSEnd": {
+                      "end": "2025-02-01T00:00:00Z"
+                    }
+                  },
+                  {
+                    "TxnFilterPostingAmountGreater": {
+                      "regex": "Billing:Initech:.*",
+                      "amount": 0
+                    }
+                  },
+                  {
+                    "TxnFilterPostingAmountLess": {
+                      "regex": "Client:Initech:.*",
+                      "amount": 0
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "AccountSelectorChecksum": {
+          "hash": {
+            "algorithm": "SHA-256",
+            "value": "7e7dd8ef1e4292416ffe27d9c42cf3c6f218cfe63cc12d1ec3546ca838d1cfda"
+          },
+          "selectors": [
+            "Billing:.*"
+          ]
+        }
+      }
+    ]
+  },
+  "title": "Balance Report",
+  "balances": [
+    {
+      "accountSum": "0.00",
+      "accountTreeSum": "1040.00",
+      "account": "Billing:Initech",
+      "commodity": "€"
+    },
+    {
+      "accountSum": "0.00",
+      "accountTreeSum": "1040.00",
+      "account": "Billing:Initech:T-M",
+      "commodity": "€"
+    },
+    {
+      "accountSum": "200.00",
+      "accountTreeSum": "200.00",
+      "account": "Billing:Initech:T-M:Material",
+      "commodity": "€"
+    },
+    {
+      "accountSum": "840.00",
+      "accountTreeSum": "840.00",
+      "account": "Billing:Initech:T-M:Time",
+      "commodity": "€"
+    }
+  ],
+  "deltas": [
+    {
+      "delta": "1040.00",
+      "commodity": "€"
+    }
+  ]
+}

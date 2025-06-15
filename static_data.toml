@@ -21,7 +21,8 @@ Comment="Approved for F-tax"
 
 [invoice]
 data_dir="exported-from-pta"
-data_file="rep.reg.json"
+balance_file="2025-01-Initech.bal.json"
+report_file="2025-01-Initech.reg.json"
 logo_path = "dummy-logo.png"
 invoice_date = "2025-06-01"
 invoice_number = "321"

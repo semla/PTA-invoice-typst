@@ -2,14 +2,19 @@
 
 #let static_data = toml("static_data.toml")
 #let client_data = toml("clients.toml")
-#let data_from_pta_export = json(static_data.invoice.data_dir + "/" + static_data.invoice.data_file)
+#let balance_from_pta_export = json(static_data.invoice.data_dir + "/" + static_data.invoice.balance_file)
+#let report_from_pta_export = json(static_data.invoice.data_dir + "/" + static_data.invoice.report_file)
 
-#let invoice_tx = "Not found or array empty"
-#if "transactions" in data_from_pta_export and type(data_from_pta_export.transactions) == array and data_from_pta_export.transactions.len() > 0 {
-  invoice_tx = data_from_pta_export
+#let balance_data = "Not found or array empty"
+#if "deltas" in balance_from_pta_export and type(balance_from_pta_export.deltas) == array and balance_from_pta_export.deltas.len() > 0 {
+  balance_data = balance_from_pta_export
+    .deltas
+}
+
+#let registry_data = "Not found or array empty"
+#if "transactions" in report_from_pta_export and type( report_from_pta_export.transactions) == array and report_from_pta_export.transactions.len() > 0 {
+  registry_data = report_from_pta_export
     .transactions
-    //.filter(item => item.txn.description.contains(static_data.invoice.filter_for_register_report))
-    .last()
 }
 
 #let invoice_date_str = datetime.today().display()
@@ -66,8 +71,6 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
   static_data.sender.company_name
 }
 
-
-
 #let client = client_data.clients.find(item => item.id == client_data.client_id_to_use)
 
 // placement for sending a printed copy in a c5 envelope with "window" h2
@@ -84,23 +87,34 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
 )
 
 // #let amount_str = invoice_tx.postings.find(item => item.account == static_data.invoice.account_name_for_amount).runningTotal
-#let amount_str = invoice_tx.postings.at(0).runningTotal
+#let amount_str = balance_data.at(0).delta
 #let amount = float(amount_str)
+#let commodity = balance_data.at(0).commodity
 
+/*
 #let vat = 0
-#let vat_str = invoice_tx.postings.find(item => item.account == static_data.invoice.account_name_for_vat)
+
+ #let vat_str = invoice_tx.postings.find(item => item.account == static_data.invoice.account_name_for_vat)
 #if vat_str != none {
   // && if vat_str.amount != none {
   vat = float(vat_str.amount)
-}
+} 
 
 #let total = amount + vat
+*/
 
-#align(horizon)[
+#align(horizon)[== Summary
+Total: #amount #commodity
+
+#h(1em)
+== Specification
   #table(
-    columns: 4,
-    [*Specification*], [*Amount*], [*Vat*], [*Total*],
-    [#invoice_tx.txn.description], [#calc.abs(amount)], [#vat], [#calc.abs(total)],
+    columns: 3,
+    table.header([*Date*], [*Description*], [*Amount*]),
+    //..invoice_tx.map(v => (v.displayTime,v.txn.description,v.postings.at(0).amount)),
+         ..for (value) in registry_data {
+      (value.displayTime, value.txn.description, value.postings.at(0).amount +" "+ value.postings.at(0).commodity)
+    } 
   )
 ]
 
