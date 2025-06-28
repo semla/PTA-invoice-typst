@@ -42,8 +42,7 @@
 line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
     width: 100%,
     grid(
-      columns: (1fr, 1fr, 1.6fr), // Four equal-width columns
-      gutter: 0.5em,
+      columns: (1fr, 1fr, 1.8fr), // Four equal-width columns
       rect(fill: luma(245), inset: (x:5mm,y:3mm))[
         #static_data.sender.company_name \
         #static_data.sender.personal_name \
