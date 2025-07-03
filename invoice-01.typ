@@ -26,6 +26,7 @@
 
 #set page(
   header: [
+    Invoice
     #h(1fr)
     #invoice_date_str
     #h(1fr)
@@ -64,18 +65,21 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
   ),
 )
 
-#if static_data.invoice.logo_path.len() > 1 {
-  image(static_data.invoice.logo_path)
-} else {
-  static_data.sender.company_name
-}
-
 #let client = client_data.clients.find(item => item.id == client_data.client_id_to_use)
 
 // placement for sending a printed copy in a c5 envelope with "window" h2
 #let address_placement_y = 44 - 25
 // 297 / 2 + 83 + 25
 #let address_placement_x = 114
+
+#if static_data.sender.logo_path.len() > 1 {
+  v(address_placement_y*1mm)
+  image(static_data.sender.logo_path)
+} else {
+  static_data.sender.company_name
+}
+
+
 
 #place(
   top + left,
