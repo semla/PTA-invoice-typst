@@ -105,9 +105,20 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
 
 #let total = amount + vat
 */
+#align(horizon)[
+    #for (key, value) in client {
+      if(key != "id" and key != "name" and key != "address") {
+          key +": "+ value +"\n"
+        }
+  }
+
+    Invoice number: #static_data.invoice.invoice_number \ 
+]
+
 
 #align(horizon)[== Summary
-Total: #amount #commodity
+Total: #strong(amount_str) #strong(commodity) \
+Due date: #strong(static_data.invoice.due_date)
 
 #h(1em)
 == Specification
