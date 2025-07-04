@@ -26,7 +26,7 @@
 
 #set page(
   header: [
-    Invoice
+    #static_data.invoice.invoice_title
     #h(1fr)
     #invoice_date_str
     #h(1fr)
