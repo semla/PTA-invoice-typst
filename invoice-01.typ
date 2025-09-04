@@ -74,10 +74,9 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
 
 #if static_data.sender.logo_path.len() > 1 {
   v(address_placement_y*1mm)
-  image(static_data.sender.logo_path)
-} else {
-  static_data.sender.company_name
-}
+  image(static_data.sender.logo_path, alt:static_data.sender.company_name, fit: "contain")
+} 
+
 
 
 
