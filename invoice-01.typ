@@ -24,6 +24,9 @@
   invoice_date_str = static_data.invoice.invoice_date
 }
 
+#if static_data.sender.company_name.len() > 1 {
+  static_data.invoice.invoice_title += " " +static_data.sender.company_name
+}
 #set page(
   header: [
     #static_data.invoice.invoice_title
