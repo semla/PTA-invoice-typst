@@ -14,7 +14,7 @@ Read more about https://plaintextaccounting.org/[PTA - Plain Text Accounting]. I
 
 ### CSV from Hledger
 Generate the csv with something like: +
-`hledger register -f .hledger.journal date:2025-03-03 layout wide desc:x assets:receivable -O csv > exported-from-pta/register-exp-hledger.csv`
+`hledger register -f .hledger.example.journal --invert date:2025-03-03 layout wide desc:x revenue liabilities:vat:sales-25 -O csv > exported-from-pta/register-exp-hledger.csv`
 
 `hledger balance -f .hledger.example.journal date:2025-03-03 layout wide desc:x assets:receivable -O csv > exported-from-pta/balance-exp-hledger.csv`
 

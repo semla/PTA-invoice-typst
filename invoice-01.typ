@@ -85,9 +85,19 @@
     // CSV columns: "txnidx","date","code","description","account","amount","total"
     registry_data = report_from_pta_export.slice(1).map(row => {
       let parsed = parse-money(row.at(5)) // "amount" column
+      let account = row.at(4) // account column
+      let description = row.at(3) // original description
+      
+      // Use configurable VAT account and text
+      let display_description = if account.contains(static_data.invoice.hledger_account_name_for_vat) {
+        static_data.invoice.hledger_vat_text
+      } else {
+        description
+      }
+      
       (
         displayTime: row.at(1), // date
-        txn: (description: row.at(3)), // description
+        txn: (description: display_description), // customized description
         postings: ((amount: str(parsed.amount), commodity: parsed.currency),) // amount
       )
     })
