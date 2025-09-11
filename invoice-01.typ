@@ -2,19 +2,57 @@
 
 #let static_data = toml("static_data.toml")
 #let client_data = toml("clients.toml")
-#let balance_from_pta_export = json(static_data.invoice.data_dir + "/" + static_data.invoice.balance_file)
-#let report_from_pta_export = json(static_data.invoice.data_dir + "/" + static_data.invoice.report_file)
+
+// Infer format from file extension
+#let balance_file_path = static_data.invoice.data_dir + "/" + static_data.invoice.balance_file
+#let report_file_path = static_data.invoice.data_dir + "/" + static_data.invoice.report_file
+
+#let balance_from_pta_export = if balance_file_path.ends-with(".csv") {
+  csv(balance_file_path)
+} else {
+  json(balance_file_path)
+}
+
+#let report_from_pta_export = if report_file_path.ends-with(".csv") {
+  csv(report_file_path)
+} else {
+  json(report_file_path)
+}
 
 #let balance_data = "Not found or array empty"
-#if "deltas" in balance_from_pta_export and type(balance_from_pta_export.deltas) == array and balance_from_pta_export.deltas.len() > 0 {
-  balance_data = balance_from_pta_export
-    .deltas
+#if balance_file_path.ends-with(".csv") {
+  // CSV format: array of arrays, first row is header
+  if type(balance_from_pta_export) == array and balance_from_pta_export.len() > 1 {
+    // Find the first data row (skip header and "Total:" row)
+    let data_row = balance_from_pta_export.find(row => row.at(0) != "account" and row.at(0) != "Total:")
+    if data_row != none {
+      balance_data = ((delta: data_row.at(1), commodity: ""),) // Make it compatible with existing code
+    }
+  }
+} else {
+  // JSON format (original tackler format)
+  if "deltas" in balance_from_pta_export and type(balance_from_pta_export.deltas) == array and balance_from_pta_export.deltas.len() > 0 {
+    balance_data = balance_from_pta_export.deltas
+  }
 }
 
 #let registry_data = "Not found or array empty"
-#if "transactions" in report_from_pta_export and type( report_from_pta_export.transactions) == array and report_from_pta_export.transactions.len() > 0 {
-  registry_data = report_from_pta_export
-    .transactions
+#if report_file_path.ends-with(".csv") {
+  // CSV format: array of arrays, first row is header
+  if type(report_from_pta_export) == array and report_from_pta_export.len() > 1 {
+    // Convert CSV rows to structure compatible with existing code
+    // CSV columns: "txnidx","date","code","description","account","amount","total"
+    registry_data = report_from_pta_export.slice(1).map(row => (
+      displayTime: row.at(1), // date
+      txn: (description: row.at(3)), // description
+      postings: ((amount: row.at(5), commodity: ""),) // amount
+    ))
+  }
+} else {
+  // JSON format (original tackler format)
+  if "transactions" in report_from_pta_export and type(report_from_pta_export.transactions) == array and report_from_pta_export.transactions.len() > 0 {
+    registry_data = report_from_pta_export.transactions
+  }
 }
 
 #let invoice_date_str = datetime.today().display()
