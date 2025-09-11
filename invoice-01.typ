@@ -1,5 +1,45 @@
 #set page("a4")
 
+// Parse an amount string that may be like "3900.00 SEK", "€3,900.00", or "3900,00 €"
+#let parse-money = (s) => {
+  // Normalize whitespace
+  let t = s.trim()
+
+  // If there's an internal space, assume suffix currency like "3900.00 SEK"
+  if t.contains(" ") {
+    let parts = t.split(" ")
+    // amount may include grouping commas; remove them
+    let amount-str = parts.slice(0, parts.len() - 1).join(" ").replace(",", "")
+    let currency = parts.last()
+    (amount: float(amount-str), currency: currency)
+  } else {
+    // No space – handle prefix/suffix symbol (€, $, etc.)
+    // Find first/last digit to isolate the numeric part
+    let digits = "0123456789"
+    let first = 0
+    while first < t.len() {
+      if digits.contains(t.at(first)) { break }
+      first += 1
+    }
+    let last = t.len() - 1
+    while last >= 0 {
+      if digits.contains(t.at(last)) { break }
+      last -= 1
+    }
+
+    if first == 0 and last == t.len() - 1 {
+      // Pure numeric – no currency
+      (amount: float(t.replace(",", "")), currency: "")
+    } else {
+      let amount-str = t.slice(first, last + 1).replace(",", "")
+      let prefix = t.slice(0, first).trim()
+      let suffix = t.slice(last + 1).trim()
+      let currency = if suffix.len() > 0 { suffix } else { prefix }
+      (amount: float(amount-str), currency: currency)
+    }
+  }
+}
+
 #let static_data = toml("static_data.toml")
 #let client_data = toml("clients.toml")
 
@@ -26,7 +66,8 @@
     // Find the first data row (skip header and "Total:" row)
     let data_row = balance_from_pta_export.find(row => row.at(0) != "account" and row.at(0) != "Total:")
     if data_row != none {
-      balance_data = ((delta: data_row.at(1), commodity: ""),) // Make it compatible with existing code
+      let parsed = parse-money(data_row.at(1))
+      balance_data = ((delta: str(parsed.amount), commodity: parsed.currency),)
     }
   }
 } else {
@@ -42,11 +83,14 @@
   if type(report_from_pta_export) == array and report_from_pta_export.len() > 1 {
     // Convert CSV rows to structure compatible with existing code
     // CSV columns: "txnidx","date","code","description","account","amount","total"
-    registry_data = report_from_pta_export.slice(1).map(row => (
-      displayTime: row.at(1), // date
-      txn: (description: row.at(3)), // description
-      postings: ((amount: row.at(5), commodity: ""),) // amount
-    ))
+    registry_data = report_from_pta_export.slice(1).map(row => {
+      let parsed = parse-money(row.at(5)) // "amount" column
+      (
+        displayTime: row.at(1), // date
+        txn: (description: row.at(3)), // description
+        postings: ((amount: str(parsed.amount), commodity: parsed.currency),) // amount
+      )
+    })
   }
 } else {
   // JSON format (original tackler format)
