@@ -7,7 +7,7 @@ The address placement *hopefully* fits a C5 envelope with an h2 "window".
 Read more about https://plaintextaccounting.org/[PTA - Plain Text Accounting]. It should be possible to support all pta software that exports to json.
 
 ## Data
-The invoice reads from .toml and .json / csv files:
+.The invoice reads from .toml and .json / csv files:
 * clients.toml
 * static_data.toml
 * 2 json / csv files containing the balance and register, the path and file names and are specified in static_data.toml
