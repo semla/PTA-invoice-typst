@@ -1,11 +1,13 @@
 # PTA Typst Invoice
 
-**Background** invoice for use with PTA software like hledger and https://tackler.fi/[Tackler]. +
+Invoice for use with PTA software like hledger and https://tackler.fi/[Tackler].
+
+## Background
 When trying out plain text accounting (PTA), I needed a way to create pdf invoices. I stumbled on Typst and here is the result.
 
 For PTA I use hledger which is really easy to use. I am considering Tackler due to its journal data auditing features, which allows it to cryptographically prove the data has not changed. For now the Tackler features may not be quite up to date.
 
-The address placement *hopefully* fits a C5 envelope with an h2 "window".
+The address placement *hopefully* fits a C5 envelope with an h2 "window". So far I haven't had to print the invoice so it is not tested.
 
 ## PTA
 Read more about https://plaintextaccounting.org/[PTA - Plain Text Accounting]. 
