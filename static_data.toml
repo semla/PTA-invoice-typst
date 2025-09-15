@@ -37,4 +37,4 @@ comment = ""
 total_ex_vat = "Total ex vat"
 # todo: add support for more vat accounts, like several different percentages
 hledger_account_name_for_vat = "liabilities:vat:sales"
-hledger_vat_text = "Moms 25%"
+hledger_vat_text = "VAT 25%"
