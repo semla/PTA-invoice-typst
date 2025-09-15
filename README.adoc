@@ -21,9 +21,14 @@ Read more about https://plaintextaccounting.org/[PTA - Plain Text Accounting].
 
 ### CSV from Hledger
 Generate the csv with something like: +
-`hledger register -f .hledger.example.journal --invert date:2025-03-03 layout wide desc:x revenue liabilities:vat:sales-25 -O csv > exported-from-pta/register-exp-hledger.csv`
 
-`hledger balance -f .hledger.example.journal date:2025-03-03 layout wide desc:x assets:receivable -O csv > exported-from-pta/balance-exp-hledger.csv`
+**Register export** (revenue only - for invoice line items): +
+`hledger register -f div/.hledger.example.journal --invert date:2025-03-03 desc:x revenue -O csv > exported-from-pta/register-exp-hledger.csv`
+
+**Balance export** (revenue + VAT - for invoice totals): +
+`hledger balance -f div/.hledger.example.journal --invert date:2025-03-03 desc:x revenue liabilities:vat:sales -O csv > exported-from-pta/balance-exp-hledger.csv`
+
+The register export contains only revenue accounts for detailed line items, while the balance export includes revenue and VAT accounts. The CSV total row provides the invoice total.
 
 ### JSON from Tackler
 Generate the json with something like: +

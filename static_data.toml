@@ -29,6 +29,12 @@ invoice_title = "Invoice"
 invoice_date = "2025-06-01"
 invoice_number = "321"
 due_date = "2025-07-01"
-hledger_account_name_for_vat = "liabilities:vat:sales"
-hledger_vat_text = "VAT 25%"
+total_word = "Total"
 comment = ""
+
+
+[VAT]
+total_ex_vat = "Total ex vat"
+# todo: add support for more vat accounts, like several different percentages
+hledger_account_name_for_vat = "liabilities:vat:sales"
+hledger_vat_text = "Moms 25%"

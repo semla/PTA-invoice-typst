@@ -2,8 +2,18 @@
 
 // Parse an amount string that may be like "3900.00 SEK", "€3,900.00", or "3900,00 €"
 #let parse-money = (s) => {
+  // Handle empty or invalid input
+  if s == none or s == "" {
+    return (amount: 0.0, currency: "")
+  }
+  
   // Normalize whitespace
   let t = s.trim()
+  
+  // Handle empty string after trim
+  if t == "" {
+    return (amount: 0.0, currency: "")
+  }
 
   // If there's an internal space, assume suffix currency like "3900.00 SEK"
   if t.contains(" ") {
@@ -11,7 +21,11 @@
     // amount may include grouping commas; remove them
     let amount-str = parts.slice(0, parts.len() - 1).join(" ").replace(",", "")
     let currency = parts.last()
-    (amount: float(amount-str), currency: currency)
+    if amount-str == "" {
+      (amount: 0.0, currency: currency)
+    } else {
+      (amount: float(amount-str), currency: currency)
+    }
   } else {
     // No space – handle prefix/suffix symbol (€, $, etc.)
     // Find first/last digit to isolate the numeric part
@@ -29,13 +43,22 @@
 
     if first == 0 and last == t.len() - 1 {
       // Pure numeric – no currency
-      (amount: float(t.replace(",", "")), currency: "")
+      let clean-amount = t.replace(",", "")
+      if clean-amount == "" {
+        (amount: 0.0, currency: "")
+      } else {
+        (amount: float(clean-amount), currency: "")
+      }
     } else {
       let amount-str = t.slice(first, last + 1).replace(",", "")
       let prefix = t.slice(0, first).trim()
       let suffix = t.slice(last + 1).trim()
       let currency = if suffix.len() > 0 { suffix } else { prefix }
-      (amount: float(amount-str), currency: currency)
+      if amount-str == "" {
+        (amount: 0.0, currency: currency)
+      } else {
+        (amount: float(amount-str), currency: currency)
+      }
     }
   }
 }
@@ -59,16 +82,39 @@
   json(report_file_path)
 }
 
+// Extract individual amounts from balance data for totals section
+#let net_amount = 0
+#let vat_amount = none
+#let total_amount = none
+#let currency = ""
+
+#if balance_file_path.ends-with(".csv") {
+  // CSV format: parse each account row
+  if type(balance_from_pta_export) == array and balance_from_pta_export.len() > 1 {
+    // Skip header row (first row) by using slice(1)
+    for row in balance_from_pta_export.slice(1) {
+      let account = row.at(0)
+      let parsed = parse-money(row.at(1))
+      
+      if account == "Total:" {
+        total_amount = parsed.amount // Already positive with --invert
+      } else if account.contains(static_data.VAT.hledger_account_name_for_vat) {
+        vat_amount = parsed.amount // Already positive with --invert
+      } else {
+        // All other accounts are treated as revenue/net amount
+        net_amount += parsed.amount // Already positive with --invert
+        if currency == "" { currency = parsed.currency }
+      }
+    }
+  }
+}
+
+// Legacy balance_data for compatibility
 #let balance_data = "Not found or array empty"
 #if balance_file_path.ends-with(".csv") {
-  // CSV format: array of arrays, first row is header
-  if type(balance_from_pta_export) == array and balance_from_pta_export.len() > 1 {
-    // Find the first data row (skip header and "Total:" row)
-    let data_row = balance_from_pta_export.find(row => row.at(0) != "account" and row.at(0) != "Total:")
-    if data_row != none {
-      let parsed = parse-money(data_row.at(1))
-      balance_data = ((delta: str(parsed.amount), commodity: parsed.currency),)
-    }
+  // For legacy compatibility, use total amount
+  if total_amount != none {
+    balance_data = ((delta: str(total_amount), commodity: currency),)
   }
 } else {
   // JSON format (original tackler format)
@@ -89,8 +135,8 @@
       let description = row.at(3) // original description
       
       // Use configurable VAT account and text
-      let display_description = if account.contains(static_data.invoice.hledger_account_name_for_vat) {
-        static_data.invoice.hledger_vat_text
+      let display_description = if account.contains(static_data.VAT.hledger_account_name_for_vat) {
+        static_data.VAT.hledger_vat_text
       } else {
         description
       }
@@ -208,15 +254,12 @@ line(start:(-1cm, 0cm), end: (17cm, 0cm), stroke: (thickness: 0.1mm)) + block(
         }
   }
 
-    Invoice number: #static_data.invoice.invoice_number \ 
+    Invoice number: #static_data.invoice.invoice_number \
+    Due date: #strong(static_data.invoice.due_date)
 ]
 
 
-#align(horizon)[== Summary
-Total: #strong(amount_str) #strong(commodity) \
-Due date: #strong(static_data.invoice.due_date)
-
-#h(1em)
+#align(horizon)[
 == Specification
   #table(
     columns: 3,
@@ -226,5 +269,31 @@ Due date: #strong(static_data.invoice.due_date)
       (value.displayTime, value.txn.description, value.postings.at(0).amount +" "+ value.postings.at(0).commodity)
     } 
   )
+  
+  #if net_amount != none and vat_amount != none and total_amount != none {
+    v(0.5em)
+    table(
+      columns: (1fr, auto),
+      stroke: none,
+      align: (left, right),
+      [#static_data.VAT.total_ex_vat:], [#str(net_amount) #currency],
+      [#static_data.VAT.hledger_vat_text:], [#str(vat_amount) #currency],
+      table.hline(),
+      [*#static_data.invoice.total_word:*], [*#str(total_amount) #currency*],
+    )
+  }
+]
+
+// Push Summary to bottom of page above footer
+#align(bottom)[
+  #align(right)[
+    #rect(fill: luma(245), inset: (x:2mm,y:3mm))[
+      #align(left)[
+        == Summary
+        Total: #strong(amount_str) #strong(commodity) \
+        Due date: #strong(static_data.invoice.due_date)
+      ]
+    ]
+  ]
 ]
 
